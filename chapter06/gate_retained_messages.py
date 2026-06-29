@@ -1,0 +1,178 @@
+# Mqtt publisher libraries and dependencies
+import paho.mqtt.client as mqtt  # Eclipse Paho MQTT client library
+import ssl                       # SSL/TLS module for loading cryptographic certificates
+import time                      # Time module for managing execution delays
+import json                      # JSON formatting
+from gpiozero import Servo, LED  # GPIO control for Raspberry Pi (servomotor and LED)
+
+# --- AWS IoT Core Connection Details ---
+# Reminder: To retrieve your specific AWS MQTT broker endpoint, use the CLI:
+# aws iot describe-endpoint --endpoint-type iot:Data-ATS
+aws_endpoint = "XXXXXXXXXXXXX-ats.iot.eu-west-1.amazonaws.com"
+aws_port = 8883
+CLIENT_ID = "gate_keeper_002" # Thing name as defined in AWS IoT
+
+# --- Certificate File Paths ---
+# Paths to your root CA, device certificate, and private key files
+ca_path = "certs/AmazonRootCA1.pem"
+cert_path = "certs/AZZZZZZZZZYYYYYYYY-certificate.pem.crt"
+key_path = "certs/AZZZZZZZZZYYYYYYYY-private.pem.key"
+
+# Topic to subscribe to for configuration messages
+RETAINED_MSG_TOPIC = "fleet/{}/config".format(CLIENT_ID)
+
+# --- Hardware Setup ---
+# GPIO pin for the servo and status LED
+SERVO_PIN = 4 # GPIO pin connected to the servo's signal wire
+PWM_FREQUENCY = 50 # Standard servo frequency is 50Hz (20ms period)
+status_led = LED(27)
+# Define the GPIO pin connected to the servo's signal wire (GPIO 04)
+# We use a custom min_pulse_width and max_pulse_width
+# to prevent the servo from jittering Standard SG90 servos
+# usually operate well between 1ms (1.0/1000) and 2ms (2.0/1000)
+servo_pwm = Servo(SERVO_PIN, min_pulse_width=1.0/1000, max_pulse_width=2.0/1000)
+
+# Initialize default state of the gate as closed
+# (servo at minimum position)
+retained_message_payload = {
+    "reported": {"gate_is_open": False}, 
+    "desired": {"gate_is_open": False}
+}
+
+# --- Connection Callback Function ---
+def on_connect(client, userdata, flags, reason_code, properties):
+    """
+    This callback is triggered when the client connects to the broker.
+    """
+    if reason_code == 0:
+        print(f"Successfully connected to AWS IoT Core with client ID: {CLIENT_ID}")
+        
+        # Automatically establish the subscription upon a successful connection
+        print(f"Subscribing to topic: '{RETAINED_MSG_TOPIC}'")
+        client.subscribe(RETAINED_MSG_TOPIC, qos=1)  # Subscribe requesting Quality of Service 1
+    else:
+        # The v2 API uses 'reason_code', not 'rc', to report the status.
+        print(f"Connection failed with result code: {reason_code}")
+
+def on_message(client, userdata, msg):
+    """
+    Triggered when a message arrives from the cloud. Handles JSON parsing 
+    and delegates the business logic to the control_gate actuator function.
+    """
+    print(f"\n[NETWORK] Received message on '{msg.topic}'")
+    
+    try:
+        incoming_payload = json.loads(msg.payload.decode('utf-8'))
+        # Delegate the state evaluation and actuation logic
+        control_gate(incoming_payload)
+            
+    except json.JSONDecodeError:
+        print("[ERROR] Failed to parse incoming JSON payload.")
+
+def update_gate_state(is_open):
+    """
+    Helper function to update the physical state
+    of the gate based on the desired state.
+    """
+    if is_open:
+        servo_pwm.min()  # Open position
+        applied_state = True
+        status_led.on()
+    else:
+        servo_pwm.max()  # Closed position
+        applied_state = False
+        status_led.off()
+    # Allow time for the servo to reach the desired position
+    time.sleep(2)
+    return applied_state
+
+def control_gate(incoming_payload):
+
+    global retained_message_payload
+    
+    # Check if there is a new desired state from the cloud
+    if "desired" in incoming_payload and "gate_is_open" in incoming_payload["desired"]:
+        # Extract the desired state from the incoming payload and compar
+        # it to the current reported state
+        desired_gate_state = incoming_payload["desired"]["gate_is_open"]
+        current_gate_state = retained_message_payload["reported"].get("gate_is_open")
+
+        # Only move the hardware if the desired state is different from reality
+        # to avoid infinite loops of actuation and state reporting.
+        # This is a critical best practice when working with retained messages
+        # to ensure efficient synchronization without unintended consequences.
+        if desired_gate_state != current_gate_state:
+            print(f"[SYNC] Cloud requests gate to be: {'OPEN' if desired_gate_state else 'CLOSED'}")
+
+            applied_state = update_gate_state(desired_gate_state)
+            
+            # Update the retained message payload with the new state
+            retained_message_payload["desired"]["gate_is_open"] = desired_gate_state
+            retained_message_payload["reported"]["gate_is_open"] = applied_state
+
+            # Publish the updated state back to the cloud
+            mqttc.publish(
+                topic=RETAINED_MSG_TOPIC,
+                payload=json.dumps(retained_message_payload),
+                qos=1,
+                retain=True
+            )
+            print("[SYNC] Successfully reported synchronized state back to cloud.")
+        else:
+            print("[SYNC] Hardware is already in the desired state. No action taken.")
+    else:
+        print("[WARNING] Incoming payload does not contain a valid 'desired.gate_is_open' key.")
+
+# --- Main script logic ---
+
+# 1. Create an MQTT client instance
+mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2,
+                    client_id=CLIENT_ID)
+
+
+# 2. Assign the on_connect callback function
+mqttc.on_connect = on_connect
+# Register the message callback to handle incoming
+# messages on subscribed topics
+mqttc.on_message = on_message
+# 3. Configure TLS/SSL for a secure connection
+# This is mandatory for connecting to AWS IoT Core.
+mqttc.tls_set(
+    ca_certs=ca_path,
+    certfile=cert_path,
+    keyfile=key_path,
+    cert_reqs=ssl.CERT_REQUIRED,
+    tls_version=ssl.PROTOCOL_TLSv1_2,
+    ciphers=None
+)
+
+# 4. Initiate the connection to the AWS IoT broker
+try:
+    print(f"Attempting to connect to AWS IoT Core at {aws_endpoint}...")
+    mqttc.connect(aws_endpoint, aws_port, 60)
+except Exception as e:
+    print(f"An error occurred while trying to connect: {e}")
+    exit()
+
+# 5. Start the asynchronous network loop.
+# This non-blocking call runs on a background thread
+# # to manage network traffic.
+mqttc.loop_start()
+
+time.sleep(2) # Wait for connection to establish
+
+# 6. Keep the primary execution thread alive to maintain
+# the active session.
+try:
+    # Keep the script alive.
+    while True:
+        time.sleep(2)
+        
+except KeyboardInterrupt:
+    print("\nGracefully disconnecting...")
+    status_led.off()
+    status_led.close()
+    servo_pwm.stop()
+    mqttc.loop_stop()
+    mqttc.disconnect()
+    print("Disconnected.")
