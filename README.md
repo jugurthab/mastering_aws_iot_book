@@ -32,14 +32,15 @@ The code is organized by chapter to help you easily locate the scripts and confi
 └── Chapter_12_Security_Deep_Dive/           # Device Defender and secure tunneling setups
 ```
 
-
 ## 🤝 Contributing
 Found a bug, a typo, or have a suggestion to improve the code? Please feel free to open an Issue or submit a Pull Request. Contributions are always welcome to keep this repository up-to-date with the latest AWS IoT best practices!
 
 ## ✍️ About the Author
 **Jugurtha BELKALEM** is a **Tech Lead DevOps** and **IoT Engineer** specializing in embedded systems and scalable cloud infrastructure. Drawing on 8 years of professional experience, he focuses on designing resilient, secure architectures that bridge the gap between physical edge hardware and enterprise cloud environments. He actively orchestrates automated fleet provisioning, serverless compute integrations, and highly robust CI/CD pipelines.
 
-LinkedIn: **Jugurtha BELKALEM**
+LinkedIn: [https://www.linkedin.com/in/jugurtha-belkalem-707b7b105/](https://www.linkedin.com/in/jugurtha-belkalem-707b7b105/)
 
-## 📄 License
-The code in this repository is licensed under the MIT License - see the LICENSE file for details.
+## 📄 License & Copyright
+© 2026 Jugurtha BELKALEM. All rights reserved.
+
+The content, text, and graphics associated with this book project are the intellectual property of the author. Code snippets provided within the companion repository are licensed under the MIT License.
