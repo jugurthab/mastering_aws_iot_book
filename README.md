@@ -1,7 +1,7 @@
 # Mastering AWS IoT Core
 
 [![Get it on Leanpub](https://img.shields.io/badge/Get_it_on-Leanpub-blue.svg)](https://leanpub.com/aws_iot_scale_fleet_management)
-[![Available on Amazon](https://img.shields.io/badge/Available_on-Amazon-orange.svg)](#) <!-- Add your Amazon link here when live -->
+[![Available on Amazon](https://img.shields.io/badge/Available_on-Amazon-orange.svg)](https://www.amazon.com/dp/B0H9C5JQ7D)
 
 Welcome to the official source code repository for **[Mastering AWS IoT Core: A Practical Guide to Connecting, Securing, and Managing IoT Devices at Scale](https://leanpub.com/aws_iot_scale_fleet_management)** by Jugurtha BELKALEM.
 
@@ -15,6 +15,27 @@ Whether you are a cloud architect, DevOps engineer, or IoT developer, this book 
 * **IoT Foundations:** Architectural patterns, MQTT protocols, and hardware selection.
 * **Core Operations:** Bidirectional communication, state persistence (*Device Shadows*), the Rules Engine, and serverless compute via AWS Lambda.
 * **Advanced Fleet Management:** Secure device provisioning at scale, Over-the-Air (***OTA***) updates, Edge computing with AWS IoT Greengrass, and enterprise-grade Zero Trust security.
+
+## 📚 Get the Book
+
+You can grab your copy of **Mastering AWS IoT Core** in digital or paperback formats from the following platforms:
+
+### 📥 Digital Version (PDF/EPUB)
+*   **Leanpub:** [Available Here](https://leanpub.com/aws_iot_scale_fleet_management)
+
+### 🇺🇸 Amazon.com Editions
+*   **Kindle eBook:** [Available Here](https://www.amazon.com/dp/B0H9C5JQ7D)
+*   **Paperback (Black & White):** [Available Here](https://www.amazon.com/dp/B0H9GBFWTL)
+*   **Paperback (Full Color):** [Available Here](https://www.amazon.com/dp/B0H9C42YPY)
+
+### 🇫🇷 Amazon.fr Editions
+*   **Format Kindle:** [Disponible Ici](https://www.amazon.fr/dp/B0H9C5JQ7D)
+*   **Broché (Noir et Blanc):** [Disponible Ici](https://www.amazon.fr/dp/B0H9GBFWTL)
+*   **Broché (Couleur):** [Disponible Ici](https://www.amazon.fr/dp/B0H9C42YPY)
+
+---
+
+🎁 **Special Bonus:** If you purchase any paperback version, simply reach out to me via [LinkedIn](https://www.linkedin.com/in/jugurtha-belkalem-707b7b105/) with proof of purchase, and I will send you the digital PDF version for free!
 
 ## 📂 Repository Structure
 
