@@ -21,17 +21,17 @@ Whether you are a cloud architect, DevOps engineer, or IoT developer, this book 
 You can grab your copy of **Mastering AWS IoT Core** in digital or paperback formats from the following platforms:
 
 ### 📥 Digital Version (PDF/EPUB)
-*   **Leanpub:** [Available Here](https://leanpub.com/aws_iot_scale_fleet_management)
+*   **Leanpub:** [[Available Here](https://leanpub.com/aws_iot_scale_fleet_management)](https://leanpub.com/aws_iot_scale_fleet_management)
 
 ### 🇺🇸 Amazon.com Editions
-*   **Kindle eBook:** [Available Here](https://www.amazon.com/dp/B0H9C5JQ7D)
-*   **Paperback (Black & White):** [Available Here](https://www.amazon.com/dp/B0H9GBFWTL)
-*   **Paperback (Full Color):** [Available Here](https://www.amazon.com/dp/B0H9C42YPY)
+*   **Kindle eBook:** [https://www.amazon.com/dp/B0H9C5JQ7D](https://www.amazon.com/dp/B0H9C5JQ7D)
+*   **Paperback (Black & White):** [https://www.amazon.com/dp/B0H9GBFWTL](https://www.amazon.com/dp/B0H9GBFWTL)
+*   **Paperback (Full Color):** [https://www.amazon.com/dp/B0H9C42YPY](https://www.amazon.com/dp/B0H9C42YPY)
 
 ### 🇫🇷 Amazon.fr Editions
-*   **Format Kindle:** [Disponible Ici](https://www.amazon.fr/dp/B0H9C5JQ7D)
-*   **Broché (Noir et Blanc):** [Disponible Ici](https://www.amazon.fr/dp/B0H9GBFWTL)
-*   **Broché (Couleur):** [Disponible Ici](https://www.amazon.fr/dp/B0H9C42YPY)
+*   **Format Kindle:** [https://www.amazon.fr/dp/B0H9C5JQ7D](https://www.amazon.fr/dp/B0H9C5JQ7D)
+*   **Broché (Noir et Blanc):** [https://www.amazon.fr/dp/B0H9GBFWTL](https://www.amazon.fr/dp/B0H9GBFWTL)
+*   **Broché (Couleur):** [https://www.amazon.fr/dp/B0H9C42YPY](https://www.amazon.fr/dp/B0H9C42YPY)
 
 ---
 
