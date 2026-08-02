@@ -21,7 +21,7 @@ Whether you are a cloud architect, DevOps engineer, or IoT developer, this book 
 You can grab your copy of **Mastering AWS IoT Core** in digital or paperback formats from the following platforms:
 
 ### 📥 Digital Version (PDF/EPUB)
-*   **Leanpub:** [[Available Here](https://leanpub.com/aws_iot_scale_fleet_management)](https://leanpub.com/aws_iot_scale_fleet_management)
+*   **Leanpub:** [https://leanpub.com/aws_iot_scale_fleet_management](https://leanpub.com/aws_iot_scale_fleet_management)
 
 ### 🇺🇸 Amazon.com Editions
 *   **Kindle eBook:** [https://www.amazon.com/dp/B0H9C5JQ7D](https://www.amazon.com/dp/B0H9C5JQ7D)
